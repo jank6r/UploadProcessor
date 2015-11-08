@@ -1,0 +1,28 @@
+
+.label-status-success {
+  background-color: #18bc9c;
+}
+
+.label-status-pending {
+  background-color: #95a5a6;
+}
+
+.label-status-running {
+  background-color: #3498db;
+}
+
+.label-status-failure {
+ background-color: #e74c3c;
+}
+
+.dl-horizontal dt {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	vertical-align: top;
+}
+
+.dl-horizontal dd {
+	margin-top: 5px;
+	margin-bottom: 0px;
+	vertical-align: middle;
+}

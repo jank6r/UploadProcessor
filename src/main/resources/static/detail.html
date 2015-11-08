@@ -1,0 +1,43 @@
+<div id="divDetailHead" class="row">
+	<div class="col-sm-10">
+
+		<h2>Detail - {{command.id}}</h2>
+
+	</div>
+	<div class="col-sm-1" style="text-align: right">
+		<a href="/#/" class="btn btn-link btn-sm">Back to list</a>
+	</div>
+	<div class="col-sm-1" style="text-align: right">
+		<button ng-click="loadData()" class="btn btn-primary btn-sm">Refresh</button>
+	</div>
+
+</div>
+<div id="divDetail" class="row">
+	<dl class="dl-horizontal">
+
+		<dt>ID</dt>
+		<dd>{{command.id}}</dd>
+
+		<dt>Status</dt>
+		<dd>
+			<span class="label label-status-{{command.status | lowercase}}">{{command.status}}</span>
+		</dd>
+
+		<dt>Time</dt>
+		<dd>{{command.creationDate | date:'dd-MM-yy HH:mm:ss'}}</dd>
+
+		<dt>Command</dt>
+		<dd>
+			<span ng-repeat="c in command.command">{{c}}{{$last ? '' : ''}}</span>
+		</dd>
+
+		<dt>Exit Code</dt>
+		<dd>{{command.exitCode}}</dd>
+
+		<dt>Output</dt>
+		<dd>
+			<pre>{{command.output}}</pre>
+		</dd>
+	</dl>
+
+</div>

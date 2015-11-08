@@ -1,0 +1,31 @@
+<div id="divList" class="row">
+	<div class="col-sm-11">
+		<h2>All Uploads</h2>
+	</div>
+	<div class="col-sm-1"  style="text-align: right">
+		<button ng-click="loadData()" class="btn btn-primary btn-sm">Refresh</button>
+	</div>
+</div>
+<div id="divList" class="row">
+	<table class="table table-bordered table-striped table-hover">
+		<thead>
+			<th>ID</th>
+			<th>Time</th>
+			<th>Command</th>
+			<th>Status</th>
+		</thead>
+		<tbody>
+
+			<tr ng-repeat="item in items">
+				<td><a href="#/detail/{{item.id}}" class="btn btn-link">{{item.id}}</a></td>
+				<td>{{item.creationDate | date:'dd-MM-yy HH:mm:ss'}}</td>
+				<td><span ng-repeat="c in item.command">{{c}}{{$last ?
+						'' : ' '}}</span></td>
+				<td><span
+					class="label label-status-{{item.status | lowercase}}">{{item.status}}</span></td>
+			</tr>
+
+		</tbody>
+
+	</table>
+</div>
