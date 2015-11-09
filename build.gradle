@@ -15,7 +15,7 @@ apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
 jar {
-    baseName = 'deploy-service'
+    baseName = 'upload-processor'
     version =  '0.3'
 }
 
@@ -39,3 +39,4 @@ dependencies {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
+
