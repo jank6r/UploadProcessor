@@ -57,7 +57,7 @@ public class UploadApiController {
             String name = multipartFile.getOriginalFilename();
 
             try {
-                File uploadedFile = createUploadFile(name, multipartFile.getInputStream());
+                File uploadedFile = storeUploadFile(name, multipartFile.getInputStream());
                 ExternalCommand command = factory.create(new String[] { scriptPath, uploadedFile.getAbsolutePath() });
 
                 queue.add(command);
@@ -79,9 +79,21 @@ public class UploadApiController {
         return queue.getById(commandId);
     }
 
-    private File createUploadFile(String name, InputStream inputStream) throws IOException {
-
+    private File createFile(String name) {
         File file = new File(uploadPath, name);
+        int collisionId = 0;
+
+        while (file.exists()) {
+            file = new File(uploadPath, name + '~' + collisionId);
+            collisionId++;
+        }
+
+        return file;
+    }
+
+    private File storeUploadFile(String name, InputStream inputStream) throws IOException {
+
+        File file = createFile(name);
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file));
 
         int byteCount = FileCopyUtils.copy(inputStream, outputStream);

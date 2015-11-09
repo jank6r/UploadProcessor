@@ -6,16 +6,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,6 +40,9 @@ public class UploadApiControllerTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @Rule
+    public TemporaryFolder testFolder = new TemporaryFolder();
 
     @Mock
     private ExternalCommandFactory factory;
@@ -84,7 +90,8 @@ public class UploadApiControllerTest {
     public void setupUploadPath() throws Exception {
         Field field = ReflectionUtils.findField(UploadApiController.class, "uploadPath");
         field.setAccessible(true);
-        ReflectionUtils.setField(field, uploadApiController, "build/tmp");
+        String uploadPath = testFolder.getRoot().getAbsolutePath();
+        ReflectionUtils.setField(field, uploadApiController, uploadPath);
     }
 
     @Test
@@ -111,12 +118,16 @@ public class UploadApiControllerTest {
     @Test
     public void testPostUpload() throws Exception {
 
-        MockMultipartFile multipart = new MockMultipartFile("file", "upload.txt", MediaType.MULTIPART_FORM_DATA_VALUE,
+        final String filename = "upload.txt";
+        MockMultipartFile multipart = new MockMultipartFile("file", filename, MediaType.MULTIPART_FORM_DATA_VALUE,
                 new byte[1024]);
 
         mockMvc.perform(fileUpload("/uploads").file(multipart)).andExpect(status().isOk())
                 .andExpect(content().json(jsonCommand02));
 
+        File uploadedFile = new File(testFolder.getRoot(), filename);
+
+        MatcherAssert.assertThat("File written", uploadedFile.exists());
     }
 
     @Test
