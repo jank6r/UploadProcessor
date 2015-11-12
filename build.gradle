@@ -45,6 +45,5 @@ applicationDistribution.with {
   from("src/main/resources") {
   	include 'application.properties'
   } 
-  into "conf"
+  into "config"
 }
-
